@@ -12,12 +12,7 @@ from mindflow.core.types.definitions.conversation import ConversationID
 
 def parse_chat_prompt_and_paths_from_args(prompt_args: Tuple[str]):
     prompt = " ".join(prompt_args)  # include files/directories in prompt
-    paths = []
-
-    for arg in prompt_args:
-        if os.path.exists(arg):
-            paths.append(arg)
-
+    paths = [arg for arg in prompt_args if os.path.exists(arg)]
     return prompt, paths
 
 

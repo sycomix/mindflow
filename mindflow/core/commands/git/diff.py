@@ -40,9 +40,10 @@ def run_diff(args: Tuple[str], detailed: bool = True) -> Optional[str]:
 
     diff_summary: str = ""
     if len(batched_parsed_diff_result) == 1:
-        content = ""
-        for file_name, diff_content in batched_parsed_diff_result[0]:
-            content += f"*{file_name}*\n DIFF CONTENT: {diff_content}\n\n"
+        content = "".join(
+            f"*{file_name}*\n DIFF CONTENT: {diff_content}\n\n"
+            for file_name, diff_content in batched_parsed_diff_result[0]
+        )
         diff_response: Union[ModelError, str] = completion_model(
             build_prompt_from_conversation_messages(
                 [
@@ -61,9 +62,10 @@ def run_diff(args: Tuple[str], detailed: bool = True) -> Optional[str]:
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = []
             for batch in batched_parsed_diff_result:
-                content = ""
-                for file_name, diff_content in batch:
-                    content += f"*{file_name}*\n DIFF CONTENT: {diff_content}\n\n"
+                content = "".join(
+                    f"*{file_name}*\n DIFF CONTENT: {diff_content}\n\n"
+                    for file_name, diff_content in batch
+                )
                 future: concurrent.futures.Future = executor.submit(
                     completion_model,
                     build_prompt_from_conversation_messages(
@@ -92,7 +94,7 @@ def run_diff(args: Tuple[str], detailed: bool = True) -> Optional[str]:
     if detailed:
         return diff_summary
 
-    summarized = completion_model(
+    return completion_model(
         build_prompt_from_conversation_messages(
             [
                 create_conversation_message(
@@ -103,7 +105,6 @@ def run_diff(args: Tuple[str], detailed: bool = True) -> Optional[str]:
             completion_model,
         )
     )
-    return summarized
 
 
 # NOTE: make sure to have a the "." in the file extension (if applicable)
@@ -161,10 +162,8 @@ def parse_git_diff(diff_str: str):
                 continue
 
             current_diff = [line]
-        else:
-            # skip lines if we are ignoring this file (TODO - this is a bit hacky)
-            if current_file:
-                current_diff.append(line)
+        elif current_file:
+            current_diff.append(line)
 
     # Add the last diff to the dictionary
     if current_file:

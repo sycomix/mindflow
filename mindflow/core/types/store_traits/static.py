@@ -12,7 +12,7 @@ T = TypeVar("T", bound="StaticStore")
 class StaticStore:
     def __init__(self, id: Union[str, dict]):
         if isinstance(id, dict):
-            if not "id" in id:
+            if "id" not in id:
                 raise ValueError("id is required")
             for key, value in id.items():
                 setattr(self, key, value)

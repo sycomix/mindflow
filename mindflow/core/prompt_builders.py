@@ -32,10 +32,11 @@ def build_prompt_from_conversation_messages(
         prompt = message["content"]
 
         if role == Role.SYSTEM.value:
-            prompt_parts.append(anthropic.HUMAN_PROMPT + prompt)
-            prompt_parts.append(
-                anthropic.AI_PROMPT
-                + " Sure! I will respond to all following messages with a response like you have just outlined for me."
+            prompt_parts.extend(
+                (
+                    anthropic.HUMAN_PROMPT + prompt,
+                    f"{anthropic.AI_PROMPT} Sure! I will respond to all following messages with a response like you have just outlined for me.",
+                )
             )
         elif role in [Role.USER.value, Role.ASSISTANT.value]:
             prompt_parts.append(

@@ -62,7 +62,7 @@ def get_document_chunk_ids(documents: Union[List[Document], Document]):
     if isinstance(documents, Document):
         documents = [documents]
 
-    total_chunks = sum([document.num_chunks + 1 for document in documents])
+    total_chunks = sum(document.num_chunks + 1 for document in documents)
     document_chunk_ids = [""] * int(total_chunks)
     j = 0
     for document in documents:

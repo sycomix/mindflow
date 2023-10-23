@@ -75,10 +75,7 @@ def run_query(document_paths: List[str], query: str) -> str:
             completion_model,
         )
     )
-    if isinstance(response, ModelError):
-        return response.query_message
-
-    return response
+    return response.query_message if isinstance(response, ModelError) else response
 
 
 def select_and_trim_text_to_fit_context_window(

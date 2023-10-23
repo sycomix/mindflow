@@ -60,7 +60,7 @@ class ConfiguredMindFlowModel(Generic[T]):
         elif model_id == ModelID.TEXT_EMBEDDING_ADA_002.value:
             self.model = cast(T, ConfiguredOpenAITextEmbeddingModel(model_id))
         else:
-            raise Exception("Unsupported model: " + model_id)
+            raise Exception(f"Unsupported model: {model_id}")
 
     def get_default_model_id(
         self, mindflow_model_id: str, configured_services: ConfiguredServices

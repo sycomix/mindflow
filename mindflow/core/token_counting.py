@@ -49,6 +49,4 @@ def get_token_count_from_document_query_for_model(
         texts.append(f"```{file_text}```")
 
     tokens = get_batch_token_count_of_text_for_model(model, texts)
-    if return_texts:
-        return tokens, texts
-    return tokens
+    return (tokens, texts) if return_texts else tokens

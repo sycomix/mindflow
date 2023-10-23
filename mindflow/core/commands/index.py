@@ -52,7 +52,7 @@ def run_index(document_paths: List[str]) -> str:
 
 def print_total_size_of_documents(documents: List[Document]):
     print(
-        f"Total content size: MB {sum([document.size for document in documents]) / 1024 / 1024:.2f}"
+        f"Total content size: MB {sum(document.size for document in documents) / 1024 / 1024:.2f}"
     )
 
 
@@ -61,7 +61,7 @@ def print_total_tokens_and_ask_to_continue(
     completion_model: ConfiguredModel,
     usd_threshold: float = 0.5,
 ):
-    total_tokens = sum([document.tokens for document in documents])
+    total_tokens = sum(document.tokens for document in documents)
     print(f"Total tokens: {total_tokens}")
     total_cost_usd: float = (
         total_tokens / float(completion_model.token_cost_unit)
